@@ -22,6 +22,7 @@ export default function CipherApp() {
             setEText("Numbers are not allowed")
         }
         else {
+            setIsError(false)
             isencrypt ? encrypt(): decrypt()
         }
     }
