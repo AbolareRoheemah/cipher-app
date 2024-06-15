@@ -2,33 +2,44 @@ import React, { useState } from 'react'
 import '../App.css'
 
 export default function CipherApp() {
-    const formData = useState({
-        text: "",
-        key: ""
-    })
+    const [text, updateText] = useState("")
+    const [key, updateKey] = useState(null)
     const [etext, setEText] = useState("")
     const [isencrypt, setIsEncrypt] = useState(true)
     // const submitForm = () => {
-    //     console.log('text', formData.text)
+    //     console.log('text', text)
     // }
     const encrypt = () => {
         let encryptedText = ""
-        const text = formData.text.toLowerCase()
-        const key = Number(formData.key)
-        if (text !== "" || key !== null) {
+        // const text = text.toLowerCase()
+        // const key = Number(key)
+        // console.log('test', /^[^\d]*$/.test(text), text, key)
+        if (
+            text !== "" ||
+            key !== null ||
+            /^[^\d]*$/.test(text) ||
+            key !== undefined
+        ) {
             const alpha = "abcdefghijklmnopqrstuvwxyz"
+            text.toLowerCase()
+            Number(key)
+            // console.log('test', text, key, typeof key)
             for (let i = 0; i < text.length; i++) {
                 const char = text[i]
+                // console.log('test7', char)
                 const indexOfChar = alpha.indexOf(char)
-                let newIndex = indexOfChar + key
+                // console.log('test8', indexOfChar, typeof key)
+                let newIndex = indexOfChar + Number(key)
+                // console.log('newindex', newIndex)
                 if (newIndex % 26 < 0) {
                     newIndex += 26
                 }
-                encryptedText = encryptedText + alpha[newIndex]
+                encryptedText += alpha[newIndex]
+                // console.log('test88', encryptedText)
             }
             setEText(encryptedText)
-            formData.text = ""
-            formData.key = ""
+            updateText("")
+            updateKey("")
         } else {
             setEText("Please fill the input fields")
         }
@@ -36,8 +47,8 @@ export default function CipherApp() {
     }
     const decrypt = () => {
         let encryptedText = ""
-        const text = formData.text.toLowerCase()
-        const key = Number(-formData.key)
+        // const text = text.toLowerCase()
+        // const key = Number(-key)
         if (text !== "" || key !== null) {
             const alpha = "abcdefghijklmnopqrstuvwxyz"
             for (let i = 0; i < text.length; i++) {
@@ -50,10 +61,11 @@ export default function CipherApp() {
                 encryptedText = encryptedText + alpha[newIndex]
             }
             setEText(encryptedText)
-            formData.text = ""
-            formData.key = ""
+            updateText("")
+            updateKey("")
         } else {
             setEText("Please fill the input fields")
+            console.log('error', etext)
         }
         // return encryptedText
     }
@@ -69,18 +81,12 @@ export default function CipherApp() {
             {isencrypt && <form className='form-ctn'>
                 <div className="input-field">
                     <label for="text">Text</label>
-                    <input name="Text" className="input" onChange={(e) => {formData.text = e.target.value}}/>
+                    <input name="Text" className="input" onChange={(e) => {updateText(e.target.value)}}/>
                 </div>
                 <div className="input-field">
                     <label for="key">Key</label>
-                    <input name="Key" className="input" type='number' onChange={(e) => {formData.key = e.target.value}}/>
+                    <input name="Key" className="input" type='number' onChange={(e) => {updateKey(e.target.value)}}/>
                 </div>
-                {/* <div className="flx">
-                    <div>
-                        <label for="Message">Message</label>
-                        <textarea name="Message" className="input"/>
-                    </div>
-                </div> */}
                 <div className='btn' onClick={() => {encrypt()}}>
                     Encrypt
                 </div>
@@ -88,20 +94,14 @@ export default function CipherApp() {
                 <p className='prompt'>Already encrypted? <span className='decrypt' onClick={() => {setIsEncrypt(false)}}>Decrypt</span></p>
             </form>}
             {!isencrypt && <form className='form-ctn'>
-                <div className="input-field">
+            <div className="input-field">
                     <label for="text">Text</label>
-                    <input name="Text" className="input" onChange={(e) => {formData.text = e.target.value}}/>
+                    <input name="Text" className="input" onChange={(e) => {updateText(e.target.value)}}/>
                 </div>
                 <div className="input-field">
                     <label for="key">Key</label>
-                    <input name="Key" className="input" type='number' onChange={(e) => {formData.key = e.target.value}}/>
+                    <input name="Key" className="input" type='number' onChange={(e) => {updateKey(e.target.value)}}/>
                 </div>
-                {/* <div className="flx">
-                    <div>
-                        <label for="Message">Message</label>
-                        <textarea name="Message" className="input"/>
-                    </div>
-                </div> */}
                 <div className='btn' onClick={() => {decrypt()}}>
                     Decrypt
                 </div>
