@@ -7,6 +7,7 @@ export default function CipherApp() {
     const [etext, setEText] = useState("")
     const [isencrypt, setIsEncrypt] = useState(true)
     const [isError, setIsError] = useState(false)
+    const store = useState([])
     const submitForm = () => {
         console.log('text', text, typeof key)
         if (
@@ -42,6 +43,7 @@ export default function CipherApp() {
             encryptedText += alpha[newIndex]
         }
         setEText(encryptedText)
+        store.push(text)
             // updateText("")
             // updateKey("")
         // return encryptedText
@@ -98,7 +100,7 @@ export default function CipherApp() {
                 <div className='btn' onClick={() => {decrypt()}}>
                     Decrypt
                 </div>
-                {!isError ? <p className='prompt'>Encrypted Text: <span className='decrypt'>{etext}</span></p>: <p className='error-p'>Error: {etext}</p>}
+                {!isError ? <p className='prompt'>Decrypted Text: <span className='decrypt'>{etext}</span></p>: <p className='error-p'>Error: {etext}</p>}
                 <p className='prompt'>Already decrypted? <span className='decrypt' onClick={() => {setIsEncrypt(true)}}>Encrypt</span></p>
             </form>}
         </div>
