@@ -6,68 +6,60 @@ export default function CipherApp() {
     const [key, updateKey] = useState(null)
     const [etext, setEText] = useState("")
     const [isencrypt, setIsEncrypt] = useState(true)
-    // const submitForm = () => {
-    //     console.log('text', text)
-    // }
+    const [isError, setIsError] = useState(false)
+    const submitForm = () => {
+        console.log('text', text, typeof key)
+        if (
+            text === "" ||
+            key === null ||
+            key === undefined ||
+            key === ""
+        ) {
+            setIsError(true)
+            setEText("Please fill the input fields correctly")
+        } else if (!/^[^\d]*$/.test(text)) {
+            setIsError(true)
+            setEText("Numbers are not allowed")
+        }
+        else {
+            isencrypt ? encrypt(): decrypt()
+        }
+    }
     const encrypt = () => {
         let encryptedText = ""
-        // const text = text.toLowerCase()
-        // const key = Number(key)
-        // console.log('test', /^[^\d]*$/.test(text), text, key)
-        if (
-            text !== "" ||
-            key !== null ||
-            /^[^\d]*$/.test(text) ||
-            key !== undefined
-        ) {
-            const alpha = "abcdefghijklmnopqrstuvwxyz"
-            text.toLowerCase()
-            Number(key)
-            // console.log('test', text, key, typeof key)
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i]
-                // console.log('test7', char)
-                const indexOfChar = alpha.indexOf(char)
-                // console.log('test8', indexOfChar, typeof key)
-                let newIndex = indexOfChar + Number(key)
-                // console.log('newindex', newIndex)
-                if (newIndex % 26 < 0) {
-                    newIndex += 26
-                }
-                encryptedText += alpha[newIndex]
-                // console.log('test88', encryptedText)
+        
+        const alpha = "abcdefghijklmnopqrstuvwxyz"
+        text.toLowerCase()
+        // console.log('test', text, key, typeof key)
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i]
+            const indexOfChar = alpha.indexOf(char)
+            let newIndex = indexOfChar + Number(key)
+            if (newIndex % 26 < 0) {
+                newIndex += 26
             }
-            setEText(encryptedText)
-            updateText("")
-            updateKey("")
-        } else {
-            setEText("Please fill the input fields")
+            encryptedText += alpha[newIndex]
         }
+        setEText(encryptedText)
+            // updateText("")
+            // updateKey("")
         // return encryptedText
     }
     const decrypt = () => {
         let encryptedText = ""
-        // const text = text.toLowerCase()
-        // const key = Number(-key)
-        if (text !== "" || key !== null) {
-            const alpha = "abcdefghijklmnopqrstuvwxyz"
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i]
-                const indexOfChar = alpha.indexOf(char)
-                let newIndex = indexOfChar + key
-                if (newIndex % 26 < 0) {
-                    newIndex += 26
-                }
-                encryptedText = encryptedText + alpha[newIndex]
+        const alpha = "abcdefghijklmnopqrstuvwxyz"
+        text.toLowerCase()
+        // console.log('test', text, key, typeof key)
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i]
+            const indexOfChar = alpha.indexOf(char)
+            let newIndex = indexOfChar + Number(-key)
+            if (newIndex % 26 < 0) {
+                newIndex += 26
             }
-            setEText(encryptedText)
-            updateText("")
-            updateKey("")
-        } else {
-            setEText("Please fill the input fields")
-            console.log('error', etext)
+            encryptedText += alpha[newIndex]
         }
-        // return encryptedText
+        setEText(encryptedText)
     }
   return (
     <div className="cipher-ctn">
@@ -87,10 +79,10 @@ export default function CipherApp() {
                     <label for="key">Key</label>
                     <input name="Key" className="input" type='number' onChange={(e) => {updateKey(e.target.value)}}/>
                 </div>
-                <div className='btn' onClick={() => {encrypt()}}>
+                <div className='btn' onClick={() => {submitForm()}}>
                     Encrypt
                 </div>
-                <p className='prompt'>Encrypted Text: <span className='decrypt'>{etext}</span></p>
+                {!isError ? <p className='prompt'>Encrypted Text: <span className='decrypt'>{etext}</span></p>: <p className='error-p'>Error: {etext}</p>}
                 <p className='prompt'>Already encrypted? <span className='decrypt' onClick={() => {setIsEncrypt(false)}}>Decrypt</span></p>
             </form>}
             {!isencrypt && <form className='form-ctn'>
@@ -105,7 +97,7 @@ export default function CipherApp() {
                 <div className='btn' onClick={() => {decrypt()}}>
                     Decrypt
                 </div>
-                <p className='prompt'>Decrypted Text: <span className='decrypt'>{etext}</span></p>
+                {!isError ? <p className='prompt'>Encrypted Text: <span className='decrypt'>{etext}</span></p>: <p className='error-p'>Error: {etext}</p>}
                 <p className='prompt'>Already decrypted? <span className='decrypt' onClick={() => {setIsEncrypt(true)}}>Encrypt</span></p>
             </form>}
         </div>

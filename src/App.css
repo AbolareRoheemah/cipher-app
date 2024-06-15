@@ -162,6 +162,9 @@ p.faded-text {
   color: #4f46e5;
   cursor: pointer;
 }
+.error-p {
+  color: red;
+}
 
 /* .App-header {
   background-color: #282c34;
