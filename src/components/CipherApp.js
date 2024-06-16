@@ -9,7 +9,7 @@ export default function CipherApp() {
     const [isError, setIsError] = useState(false)
     const store = useState([])
     const submitForm = () => {
-        console.log('text', text, typeof key)
+        console.log('text', text, typeof key, key)
         if (
             text === "" ||
             key === null ||
@@ -21,6 +21,9 @@ export default function CipherApp() {
         } else if (!/^[^\d]*$/.test(text)) {
             setIsError(true)
             setEText("Numbers are not allowed")
+        } else if (key === '26') {
+            setIsError(true)
+            setEText("For this encryption to work well, key cant be 26")
         }
         else {
             setIsError(false)
@@ -31,15 +34,18 @@ export default function CipherApp() {
         let encryptedText = ""
         
         const alpha = "abcdefghijklmnopqrstuvwxyz"
+        // const inddx = "1234567891011121314151617181920212223242526"
         text.toLowerCase()
         // console.log('test', text, key, typeof key)
         for (let i = 0; i < text.length; i++) {
-            const char = text[i]
+            const char = text[i] 
             const indexOfChar = alpha.indexOf(char)
             let newIndex = indexOfChar + Number(key)
-            if (newIndex % 26 < 0) {
-                newIndex += 26
+            console.log('mod', newIndex % 26)
+            if (newIndex > 25) {
+                newIndex = newIndex % 26
             }
+            console.log('imndex', i, newIndex)
             encryptedText += alpha[newIndex]
         }
         setEText(encryptedText)
@@ -66,7 +72,7 @@ export default function CipherApp() {
     }
   return (
     <div className="cipher-ctn">
-        <div>
+        <div className='sec1'>
           <div className="before">
             <div className="sec2-img"></div>
           </div>

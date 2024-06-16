@@ -164,13 +164,25 @@ p.faded-text {
   color: red;
 }
 
-/* .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-} */
+@media screen and (max-width: 740px) {
+  .cipher-ctn {
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+    background-color: #eef2ff;
+  }
+  .cipher-ctn div.sec1 {
+    display: none;
+    
+  }
+  .sec2-text-ctn {
+    flex-basis: 100%;
+  }
+  .form-ctn .input {
+    width: 96.5%;
+  }
+  .App {
+    background-color: #eef2ff;
+  }
+}
