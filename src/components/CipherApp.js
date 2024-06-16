@@ -9,7 +9,6 @@ export default function CipherApp() {
     const [isError, setIsError] = useState(false)
     const store = useState([])
     const submitForm = () => {
-        console.log('text', text, typeof key, key)
         if (
             text === "" ||
             key === null ||
@@ -20,12 +19,11 @@ export default function CipherApp() {
             setEText("Please fill the input fields correctly")
         } else if (!/^[^\d]*$/.test(text)) {
             setIsError(true)
-            setEText("Numbers are not allowed")
+            setEText("Numbers are not allowed in the text field")
         } else if (key === '26') {
             setIsError(true)
             setEText("For this encryption to work well, key cant be 26")
-        }
-        else {
+        } else {
             setIsError(false)
             isencrypt ? encrypt(): decrypt()
         }
@@ -41,11 +39,9 @@ export default function CipherApp() {
             const char = text[i] 
             const indexOfChar = alpha.indexOf(char)
             let newIndex = indexOfChar + Number(key)
-            console.log('mod', newIndex % 26)
             if (newIndex > 25) {
                 newIndex = newIndex % 26
             }
-            console.log('imndex', i, newIndex)
             encryptedText += alpha[newIndex]
         }
         setEText(encryptedText)
@@ -60,11 +56,11 @@ export default function CipherApp() {
         text.toLowerCase()
         // console.log('test', text, key, typeof key)
         for (let i = 0; i < text.length; i++) {
-            const char = text[i]
-            const indexOfChar = alpha.indexOf(char)
-            let newIndex = indexOfChar + Number(-key)
-            if (newIndex % 26 < 0) {
-                newIndex += 26
+            const char = text[i] // k
+            const indexOfChar = alpha.indexOf(char) // 10
+            let newIndex = indexOfChar + Number(-key) // 10-11 = -1
+            if (newIndex < 0) {
+                newIndex = newIndex + 26
             }
             encryptedText += alpha[newIndex]
         }
@@ -103,7 +99,7 @@ export default function CipherApp() {
                     <label for="key">Key</label>
                     <input name="Key" className="input" type='number' onChange={(e) => {updateKey(e.target.value)}}/>
                 </div>
-                <div className='btn' onClick={() => {decrypt()}}>
+                <div className='btn' onClick={() => {submitForm()}}>
                     Decrypt
                 </div>
                 {!isError ? <p className='prompt'>Decrypted Text: <span className='decrypt'>{etext}</span></p>: <p className='error-p'>Error: {etext}</p>}
